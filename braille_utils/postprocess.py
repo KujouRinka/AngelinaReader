@@ -6,6 +6,7 @@ import PIL
 
 from braille_utils import letters
 from braille_utils import label_tools as lt
+from braille_utils import liblouis
 
 
 class LineChar:
@@ -271,6 +272,35 @@ interpret_line_funcs = {
     'EN': interpret_line_RU, # TODO in can work with some errors for EN
 }
 
+def interpret_text_RU(lines):
+    return interpret_text_louis(lines, ['louis_tables/ru-litbrl.ctb'])
+
+def interpret_text_EN(lines):
+    return interpret_text_louis(lines, ['louis_tables/ru.ctb'])
+
+interpret_text_funcs = {
+    'RU': interpret_text_RU,
+    'EN': interpret_text_EN,
+}
+
+
+
+def lines_to_unicode_braille(lines):
+    out_text = ''
+    for ln in lines:
+        if ln.has_space_before:
+            out_text += '\n'
+        for ch in ln.chars:
+            out_text += ' ' * ch.spaces_before + lt.int_to_unicode(ch.label)
+        out_text += '\n'
+    return out_text
+
+def interpret_text_louis(lines, tables):
+    unicode_text = lines_to_unicode_braille(lines).replace(" ", lt.int_to_unicode(0))
+    #result = liblouis.backTranslateString(tables, unicode_text)
+    result = liblouis.backTranslateString(tables, unicode_text)
+    return result
+
 
 def filter_lonely_rects_for_lines(lines):
     allowed_lonely = {} # lt.label010_to_int('111000'), lt.label010_to_int('000111'), lt.label010_to_int('111111')
@@ -412,6 +442,9 @@ def validate_postprocess(in_text, out_text):
     :return: validates that  in_text -> out_text
     '''
     res_text = lines_to_text(text_to_lines(in_text))
+
+    #res_text2 = interpret_text_RU(text_to_lines(in_text))
+
     assert res_text == out_text, (in_text, res_text, out_text)
 
 

@@ -357,16 +357,16 @@ class BrailleInference:
         }
 
         if draw:
-            results_dict.update(self.draw_results(aug_img, boxes, lines, labels, scores, False, draw_refined))
+            results_dict.update(self.draw_results(aug_img, boxes, lines, labels, scores, False, draw_refined, lang=lang))
             if process_2_sides:
                 aug_img = aug_img.transpose(PIL.Image.FLIP_LEFT_RIGHT)
-                results_dict.update(self.draw_results(aug_img, boxes2, lines2, labels2, scores2, True, draw_refined))
+                results_dict.update(self.draw_results(aug_img, boxes2, lines2, labels2, scores2, True, draw_refined, lang=lang))
             if self.verbose >= 2:
                 print("    run_impl.draw", time.clock() - t)
 
         return results_dict
 
-    def draw_results(self, aug_img, boxes, lines, labels, scores, reverse_page, draw_refined):
+    def draw_results(self, aug_img, boxes, lines, labels, scores, reverse_page, draw_refined, lang):
         suff = '.rev' if reverse_page else ''
         aug_img = copy.deepcopy(aug_img)
         draw = PIL.ImageDraw.Draw(aug_img)
@@ -397,6 +397,7 @@ class BrailleInference:
                 #score = '{:.1f}'.format(score*10)
                 #draw.text((box[0],box[3]+12), score, font=fnt, fill='green')
             out_text.append(s)
+        #out_text = postprocess.interpret_text_funcs[lang](lines).split('\n')
         return {
             'labeled_image' + suff: aug_img,
             'lines' + suff: lines,
@@ -575,18 +576,20 @@ if __name__ == '__main__':
     #img_filename_mask = r'D:\Programming.Data\Braille\web_uploaded\data\raw\*.*'
     #img_filename_mask = r'D:\Programming.Data\Braille\ASI\Braile Photos and Scans\Turlom_Copybook_3-18\Turlom_Copybook10\Photo_Turlom_C10\Photo_Turlom_C10_8.jpg'
     #img_filename_mask = r'D:\Programming.Data\Braille\ASI\Student_Book\56-61\IMG_20191109_195953.jpg'
-    img_filename_mask = r'D:\Programming.Data\Braille\ASI\Braile Photos and Scans\**\*.*'
+    #img_filename_mask = r'D:\Programming.Data\Braille\ASI\Braile Photos and Scans\**\*.*'
+    img_filename_mask = r'D:\Programming.Data\Braille\ASI\Braile Photos and Scans\**\*.jpg'
 
     #results_dir =       r'D:\Programming.Data\Braille\web_uploaded\re-processed200823'
-    results_dir =       r'D:\Programming.Data\Braille\ASI_results_NEW_EN\Braile Photos and Scans'
+    #results_dir =       r'D:\Programming.Data\Braille\ASI_results_NEW_EN\Braile Photos and Scans'
     #results_dir =       r'D:\Programming.Data\Braille\Temp\New'
+    results_dir =       r'D:\Programming.Data\Braille\NEW_200909\ASI\Braile Photos and Scans'
 
-    remove_labeled_from_filename = False
+    remove_labeled_from_filename = True
     find_orientation = True
     process_2_sides = False
     repeat_on_aligned = False
     verbose = 0
-    draw_redined = BrailleInference.DRAW_REFINED
+    draw_redined = BrailleInference.DRAW_REFINED | BrailleInference.DRAW_FULL_CHARS
 
     recognizer = BrailleInference(verbose=verbose)
     recognizer.process_dir_and_save(img_filename_mask, results_dir, lang='RU', extra_info=None, draw_refined=draw_redined,
@@ -595,5 +598,3 @@ if __name__ == '__main__':
                                     process_2_sides=process_2_sides,
                                     align_results=True,
                                     repeat_on_aligned=repeat_on_aligned)
-
-    #recognizer.process_dir_and_save(r'D:\Programming.Data\Braille\My\raw\ang_redmi\*.jpg', r'D:\Programming.Data\Braille\tmp\flip_inv\ang_redmi', lang = 'RU')
