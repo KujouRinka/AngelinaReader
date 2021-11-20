@@ -63,7 +63,7 @@ else:
                                                align_results=True,
                                                process_2_sides=args.two,
                                                repeat_on_aligned=False,
-                                               save_development_info=False)
+                                               save_development_info=False)     # 执行此行，从文件识别
     else:
         print('Incorrect file extention: ' + Path(args.input).suffix + ' . Only images, .pdf and .zip files allowed')
         exit()

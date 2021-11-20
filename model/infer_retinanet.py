@@ -265,6 +265,7 @@ class BrailleInference:
             results_dict['err_scores'] = results_dict0['err_scores']
             results_dict['homography'] = results_dict0['homography']
         else:
+            # 执行此句，得到 result_dict
             results_dict = self.run_impl(img, lang, draw_refined, find_orientation,
                                          process_2_sides=process_2_sides, align=align_results, draw=True, gt_rects=gt_rects)
         if self.verbose >= 2:
@@ -374,6 +375,7 @@ class BrailleInference:
         }
 
         if draw:
+            # 此句完成所有字符的识别
             results_dict.update(self.draw_results(aug_img, boxes, lines, labels, scores, False, draw_refined))
             if process_2_sides:
                 aug_img = aug_img.transpose(PIL.Image.FLIP_LEFT_RIGHT)
@@ -493,6 +495,8 @@ class BrailleInference:
             img is image, not filename. When target_stem is None, it is taken from img stem.
         """
         t = timeit.default_timer()
+
+        # 识别图片，将结果写入到 result_dic
         result_dict = self.run(img, lang=lang, draw_refined=draw_refined,
                                find_orientation=find_orientation,
                                process_2_sides=process_2_sides, align_results=align_results, repeat_on_aligned=repeat_on_aligned)

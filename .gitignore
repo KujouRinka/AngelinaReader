@@ -4,3 +4,7 @@
 web_app/static/data/
 venv/
 Logs/
+.vscode/
+raw_data/
+result/
+weights/model.t7

@@ -274,6 +274,7 @@ interpret_line_funcs = {
     'PL': interpret_line_RU,
     'UZ': interpret_line_RU,
     'UZL': interpret_line_RU,
+    'CN_PINYIN': interpret_line_RU,
 }
 
 
