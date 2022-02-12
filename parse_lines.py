@@ -24,16 +24,41 @@ def parse_lines_and_save(lines: list, filename):
                 pass
 
 
+# pinyin_SHENG = {
+#     **pinyin_SPE_SHENG,
+#     **pinyin_ABG_SHENG,
+#     **pinyin_PLN_SHENG,
+# }
+
+
+# pinyin_YUN = {
+#     **pinyin_SPE_Y_YUN,
+#     **pinyin_SPE_Y_DEL_FST_YUN,
+#     **pinyin_SPE_Y_I_TO_O_YUN,
+#     **pinyin_SPE_W_YUN,
+#     **pinyin_SPE_W_DEL_FST_YUN,
+#     **pinyin_SPE_W_FST_TO_E_YUN,
+#     **pinyin_SPE_SIG_YUN,
+# }
+
 class ParseMachine(object):
-
-    OPEN = 1
-
+    WAIT_FIRST = 0
+    WAIT_SECOND = 1
 
     def __init__(self, braille123: list):
         self.braille123 = braille123
-
+        self.state = ParseMachine.WAIT_FIRST
 
     def get_one(self) -> str:
+        if self.state == ParseMachine.WAIT_FIRST:
+            self.handle_fist()
+        elif self.state == ParseMachine.WAIT_SECOND:
+            self.handle_second()
+
+    def handle_fist(self):
+        pass
+
+    def handle_second(self):
         pass
 
 
