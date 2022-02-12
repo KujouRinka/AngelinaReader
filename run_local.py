@@ -73,5 +73,6 @@ else:
 print('Done. Results are saved in ' + str(results_dir))
 
 import parse_lines
+
 # parse_lines.parse_lines_and_save(lines, args.input[:-4] + '.txt')
-parse_lines.parse_results_dict(result_dict, args.input[:-4])
+parse_lines.parse_results_dict(result_dict, str(Path(args.input).stem))
