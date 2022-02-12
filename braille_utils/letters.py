@@ -312,9 +312,10 @@ pinyin_SPE_Y_YUN = {
     '126': 'in',
     '16': 'ing',
     '23456': 've',
-    '456': 'un(yun)',
+    '456': 'vn',    # yvn
     '12346': 'van',
     '346': 'v',
+    '24': 'i',
 }
 
 pinyin_SPE_Y_DEL_FST_YUN = {
@@ -347,7 +348,7 @@ pinyin_SPE_W_DEL_FST_YUN = {
 
 pinyin_SPE_W_FST_TO_E_YUN = {
     # 变首为 e 加 w
-    '25': 'un(wen, kun)',
+    '25': 'un',   # wen, kun
     '256': 'ong',
     '2456': 'ui',
 }
@@ -363,8 +364,7 @@ pinyin_SPE_SIG_YUN = {
     '2346': 'ei',
     '12356': 'ou',
     '35': 'a',
-    '26': 'e/o',
-    '24': 'i',
+    '26': 'e',  # e/0
 }
 
 pinyin_YUN = {
