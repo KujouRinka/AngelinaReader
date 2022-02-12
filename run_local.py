@@ -31,6 +31,9 @@ recognizer = infer_retinanet.BrailleInference(
     model_weights_fn=os.path.join(local_config.data_path, 'weights', model_weights),
     create_script=None)
 
+result_dict = {}
+lines = []
+
 if Path(args.input).is_dir():
     results_dir = args.results_dir or args.input
     recognizer.process_dir_and_save(str(Path(args.input)/'**'/'*.*'), results_dir,
@@ -55,7 +58,7 @@ else:
                                                repeat_on_aligned=False,
                                                save_development_info=False)
     elif Path(args.input).suffix in ('.jpg', '.jpe', '.jpeg', '.png', '.gif', '.svg', '.bmp'):
-        recognizer.run_and_save(args.input, results_dir, target_stem=None,
+        result_dict, lines = recognizer.run_and_save(args.input, results_dir, target_stem=None,
                                                lang=args.lang, extra_info=None,
                                                draw_refined=recognizer.DRAW_NONE,
                                                remove_labeled_from_filename=False,
@@ -68,3 +71,7 @@ else:
         print('Incorrect file extention: ' + Path(args.input).suffix + ' . Only images, .pdf and .zip files allowed')
         exit()
 print('Done. Results are saved in ' + str(results_dir))
+
+import parse_lines
+# parse_lines.parse_lines_and_save(lines, args.input[:-4] + '.txt')
+parse_lines.parse_results_dict(result_dict, args.input[:-4])

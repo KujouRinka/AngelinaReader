@@ -271,8 +271,8 @@ math_RU = {
     '46': "EN",
 }
 
-pinyin_CN = {
-    # 韵母
+pinyin_SPE_YUN = {
+    # 特殊韵母
     '1246': 'ia',
     '345': 'iao',
     '15': 'ie',
@@ -285,6 +285,60 @@ pinyin_CN = {
     '1346': 'iang',
     '126': 'in',
     '16': 'ing',
+    '12346': 'uan',
+    '456': 'un(yun)',
+    '1456': 'iong',
+}
+
+pinyin_PLN_YUN = {
+    # 普通韵母
+}
+
+pinyin_SPE_SHENG = {
+    # 特殊声母
+    '34': 'zh',
+    '12345': 'ch',
+    '156': 'sh',
+    '245': 'r',
+    '1356': 'z',
+    '14': 'c',
+    '234': 's',
+}
+
+pinyin_ABG_SHENG = {
+    # 二义声母
+    '1245': 'g/j',
+    '13': 'k/q',
+    '125': 'h/x',
+}
+
+pinyin_PLN_SHENG = {
+    # 普通声母
+    **pinyin_SPE_YUN,
+    **pinyin_PLN_YUN,
+    '12': 'b',
+    '1234': 'p',
+    '134': 'm',
+    '124': 'f',
+    '145': 'd',
+    '2345': 't',
+    '1345': 'n',
+    '123': 'l',
+}
+
+pinyin_SHENG = {
+    **pinyin_SPE_SHENG,
+    **pinyin_ABG_SHENG,
+    **pinyin_PLN_SHENG,
+}
+
+pinyin_YUN = {
+    **pinyin_SPE_YUN,
+    **pinyin_PLN_YUN,
+}
+
+pinyin_CN = {
+    # 韵母
     '1236': 'an',
     '236': 'ang',
     '356': 'en',
@@ -295,9 +349,6 @@ pinyin_CN = {
     '135': 'uo',
     '23456': 'ue',
     '1235': 'er',
-    '12346': 'uan',
-    '456': 'un(yun)',
-    '1456': 'iong',
 
     '246': 'ai',
     '235': 'ao',
@@ -310,24 +361,9 @@ pinyin_CN = {
     '346': 'v',
 
     # 声母
-    '12': 'b',
-    '1234': 'p',
-    '134': 'm',
-    '124': 'f',
-    '145': 'd',
-    '2345': 't',
-    '1345': 'n',
-    '123': 'l',
-    '34': 'zh',
-    '12345': 'ch',
-    '156': 'sh',
-    '245': 'r',
-    '1245': 'g/j',
-    '13': 'k/q',
-    '125': 'h/x',
-    '1356': 'z',
-    '14': 'c',
-    '234': 's',
+    **pinyin_SPE_SHENG,
+    **pinyin_ABG_SHENG,
+    **pinyin_PLN_SHENG,
 }
 
 # Codes for dicts
@@ -345,4 +381,5 @@ letter_dicts = {
     'MATH_RU': math_RU,
     'CN_PINYIN': pinyin_CN,
 }
+
 

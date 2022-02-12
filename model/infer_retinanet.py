@@ -234,6 +234,7 @@ class BrailleInference:
         """
         :param img: can be 1) PIL.Image 2) filename to image (.jpg etc.) or .pdf file
         """
+        lines = []
         if gt_rects:
             assert find_orientation == False, "gt_rects можно передавать только если ориентация задана"
         t = timeit.default_timer()
@@ -266,13 +267,13 @@ class BrailleInference:
             results_dict['homography'] = results_dict0['homography']
         else:
             # 执行此句，得到 result_dict
-            results_dict = self.run_impl(img, lang, draw_refined, find_orientation,
+            results_dict, lines = self.run_impl(img, lang, draw_refined, find_orientation,
                                          process_2_sides=process_2_sides, align=align_results, draw=True, gt_rects=gt_rects)
         if self.verbose >= 2:
             # results_dict['image'].save(Path(results_dir) / 're2.jpg')
             # results_dict['image'].save(Path(results_dir) / 're2_100.jpg', quality=100)
             print("run.run_impl", timeit.default_timer() - t)
-        return results_dict
+        return results_dict, lines
 
 
     # def refine_boxes(self, boxes):
@@ -285,7 +286,7 @@ class BrailleInference:
     #     coefs = torch.tensor([REFINE_COEFFS])
     #     deltas = h * coefs
     #     return boxes + deltas
-		
+
     def refine_lines(self, lines):
         """
         GVNC. Эмпирическая коррекция получившихся размеров чтобы исправить неточность результатов для последующей разметки
@@ -329,6 +330,7 @@ class BrailleInference:
         boxes = boxes.tolist()
         labels = labels.tolist()
         scores = scores.tolist()
+        # 识别字符
         lines = postprocess.boxes_to_lines(boxes, labels, lang = lang)
         self.refine_lines(lines)
 
@@ -383,7 +385,8 @@ class BrailleInference:
             if self.verbose >= 2:
                 print("    run_impl.draw", timeit.default_timer() - t)
 
-        return results_dict
+        # line is really what I want
+        return results_dict, lines
 
     def draw_results(self, aug_img, boxes, lines, labels, scores, reverse_page, draw_refined):
         suff = '.rev' if reverse_page else ''
@@ -402,7 +405,7 @@ class BrailleInference:
             s_brl = ''
             for ch in ln.chars:
                 if ch.char.startswith('~') and not (draw_refined & self.DRAW_FULL_CHARS):
-                    ch.char = '~?~'
+                    ch.char = '\\'
                 # if ch.char.startswith('~'):
                 #     ch.char = lt.int_to_unicode(ch.label)
                 s += ' ' * ch.spaces_before + ch.char
@@ -497,7 +500,7 @@ class BrailleInference:
         t = timeit.default_timer()
 
         # 识别图片，将结果写入到 result_dic
-        result_dict = self.run(img, lang=lang, draw_refined=draw_refined,
+        result_dict, lines = self.run(img, lang=lang, draw_refined=draw_refined,
                                find_orientation=find_orientation,
                                process_2_sides=process_2_sides, align_results=align_results, repeat_on_aligned=repeat_on_aligned)
         if result_dict is None:
@@ -535,7 +538,7 @@ class BrailleInference:
 
         if self.verbose >= 2:
             print("run_and_save.save results", timeit.default_timer() - t)
-        return results
+        return result_dict, lines
 
     def process_dir_and_save(self, img_filename_mask, results_dir, lang, extra_info, draw_refined,
                              remove_labeled_from_filename, find_orientation, process_2_sides, align_results,
