@@ -271,29 +271,6 @@ math_RU = {
     '46': "EN",
 }
 
-pinyin_SPE_YUN = {
-    # 特殊韵母
-    '1246': 'ia',
-    '345': 'iao',
-    '15': 'ie',
-    '1256': 'iu',
-    '12456': 'uan',
-    '2356': 'uang',
-    '25': 'un(wen, kun)',
-    '256': 'ong',
-    '146': 'ian',
-    '1346': 'iang',
-    '126': 'in',
-    '16': 'ing',
-    '12346': 'uan',
-    '456': 'un(yun)',
-    '1456': 'iong',
-}
-
-pinyin_PLN_YUN = {
-    # 普通韵母
-}
-
 pinyin_SPE_SHENG = {
     # 特殊声母
     '34': 'zh',
@@ -314,8 +291,6 @@ pinyin_ABG_SHENG = {
 
 pinyin_PLN_SHENG = {
     # 普通声母
-    **pinyin_SPE_YUN,
-    **pinyin_PLN_YUN,
     '12': 'b',
     '1234': 'p',
     '134': 'm',
@@ -332,24 +307,57 @@ pinyin_SHENG = {
     **pinyin_PLN_SHENG,
 }
 
-pinyin_YUN = {
-    **pinyin_SPE_YUN,
-    **pinyin_PLN_YUN,
+pinyin_SPE_Y_YUN = {
+    # 直接加 y
+    '126': 'in',
+    '16': 'ing',
+    '23456': 've',
+    '456': 'un(yun)',
+    '12346': 'van',
+    '346': 'v',
 }
 
-pinyin_CN = {
-    # 韵母
+pinyin_SPE_Y_DEL_FST_YUN = {
+    # 去首加 y
+    '1246': 'ia',
+    '345': 'iao',
+    '15': 'ie',
+    '146': 'ian',
+    '1346': 'iang',
+    '1456': 'iong',
+}
+
+pinyin_SPE_Y_I_TO_O_YUN = {
+    # 变 i 为 o 加 y
+    '1256': 'iu',
+}
+
+pinyin_SPE_W_YUN = {
+    '136': 'u',
+}
+
+pinyin_SPE_W_DEL_FST_YUN = {
+    # 去首加 w
+    '12456': 'uan',
+    '2356': 'uang',
+    '123456': 'ua',
+    '13456': 'uai',
+    '135': 'uo',
+}
+
+pinyin_SPE_W_FST_TO_E_YUN = {
+    # 变首为 e 加 w
+    '25': 'un(wen, kun)',
+    '256': 'ong',
+    '2456': 'ui',
+}
+
+pinyin_SPE_SIG_YUN = {
     '1236': 'an',
     '236': 'ang',
     '356': 'en',
     '3456': 'eng',
-    '123456': 'ua',
-    '13456': 'uai',
-    '2456': 'ui',
-    '135': 'uo',
-    '23456': 'ue',
     '1235': 'er',
-
     '246': 'ai',
     '235': 'ao',
     '2346': 'ei',
@@ -357,13 +365,24 @@ pinyin_CN = {
     '35': 'a',
     '26': 'e/o',
     '24': 'i',
-    '136': 'u',
-    '346': 'v',
+}
+
+pinyin_YUN = {
+    **pinyin_SPE_Y_YUN,
+    **pinyin_SPE_Y_DEL_FST_YUN,
+    **pinyin_SPE_Y_I_TO_O_YUN,
+    **pinyin_SPE_W_YUN,
+    **pinyin_SPE_W_DEL_FST_YUN,
+    **pinyin_SPE_W_FST_TO_E_YUN,
+    **pinyin_SPE_SIG_YUN,
+}
+
+pinyin_CN = {
+    # 韵母
+    **pinyin_YUN,
 
     # 声母
-    **pinyin_SPE_SHENG,
-    **pinyin_ABG_SHENG,
-    **pinyin_PLN_SHENG,
+    **pinyin_SHENG,
 }
 
 # Codes for dicts
