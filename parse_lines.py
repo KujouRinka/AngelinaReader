@@ -1,4 +1,5 @@
 from braille_utils.letters import *
+from pinyin_api_req import *
 
 
 # pinyin_SHENG = {
@@ -121,7 +122,10 @@ class ParseMachine(object):
             if prev_char in pinyin_SPE_SHENG.keys():
                 ret = pinyin_SPE_SHENG[prev_char] + 'i'  # eg: zhi
             elif prev_char in pinyin_SPE_Y_YUN.keys():
-                ret = 'y' + pinyin_SPE_Y_YUN[prev_char]
+                ch = pinyin_SPE_Y_YUN[prev_char]
+                if ch == 'v':
+                    ch = 'u'
+                ret = 'y' + ch
             elif prev_char in pinyin_SPE_Y_DEL_FST_YUN.keys():
                 ret = 'y' + pinyin_SPE_Y_DEL_FST_YUN[prev_char][1:]
             elif prev_char in pinyin_SPE_Y_I_TO_O_YUN.keys():
@@ -166,6 +170,8 @@ class ParseMachine(object):
                         ret = 'h' + pinyin_YUN[cur_char]
                     else:
                         ret = 'x' + pinyin_YUN[cur_char]
+                if not b1 and len(ret) == 2 and ret[1] == 'v':
+                    ret[1] = 'u'
             else:
                 ret = pinyin_SHENG[prev_char] + pinyin_YUN[cur_char]
             return ret + suf
@@ -193,11 +199,17 @@ def parse_results_dict(result_dict, filename):
     pinyin_list = []
     word = parse_machine.get_one()
     while word != None:
-        print(word, end=' ')
         pinyin_list.append(word)
         word = parse_machine.get_one()
-    # with open(filename + '.txt', 'w') as f:
-    #     f.write('\n'.join(pinyin_list))
+    fn = 'result/' + filename + '.pinyin.txt'
+    with open(fn, 'w') as f:
+        line = ' '.join(pinyin_list).strip()
+        print(line)
+        f.write(line)
+    with open(fn, 'r') as f:
+        for line in f.readlines():
+            line = parse_pinyin(line)
+            print(line)
 
 
 braille_to_int123_map = {
