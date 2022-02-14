@@ -1,5 +1,7 @@
 # Angelina Braille Reader
 
+### forked from: https://github.com/IlyaOvodov/AngelinaReader
+
 Angelina Braille Reader is an Optical Braille Recognition system. It is designed to convert Braille text on photos into plain text.
 
 ## General description of the solution
