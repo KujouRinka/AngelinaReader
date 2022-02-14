@@ -123,14 +123,14 @@ class ParseMachine(object):
                 ret = pinyin_SPE_SHENG[prev_char] + 'i'  # eg: zhi
             elif prev_char in pinyin_SPE_Y_YUN.keys():
                 ch = pinyin_SPE_Y_YUN[prev_char]
-                if ch == 'v':
-                    ch = 'u'
+                if ch[0] == 'v':
+                    ch = 'u' + ch[1:]
                 ret = 'y' + ch
             elif prev_char in pinyin_SPE_Y_DEL_FST_YUN.keys():
                 ret = 'y' + pinyin_SPE_Y_DEL_FST_YUN[prev_char][1:]
             elif prev_char in pinyin_SPE_Y_I_TO_O_YUN.keys():
                 ts = pinyin_SPE_Y_I_TO_O_YUN[prev_char]
-                ts[0] = 'o'
+                ts = 'o' + ts[1:]
                 ret = 'y' + ts
             elif prev_char in pinyin_SPE_W_YUN.keys():
                 ret = 'w' + pinyin_SPE_W_YUN[prev_char]
@@ -138,7 +138,7 @@ class ParseMachine(object):
                 ret = 'w' + pinyin_SPE_W_DEL_FST_YUN[prev_char][1:]
             elif prev_char in pinyin_SPE_W_FST_TO_E_YUN.keys():
                 ts = pinyin_SPE_W_FST_TO_E_YUN[prev_char]
-                ts[0] = 'e'
+                ts = 'e' + ts[1:]
                 ret = 'w' + ts
             elif prev_char in pinyin_SPE_SIG_YUN.keys():
                 ret = pinyin_SPE_SIG_YUN[prev_char]
@@ -170,8 +170,8 @@ class ParseMachine(object):
                         ret = 'h' + pinyin_YUN[cur_char]
                     else:
                         ret = 'x' + pinyin_YUN[cur_char]
-                if not b1 and len(ret) == 2 and ret[1] == 'v':
-                    ret[1] = 'u'
+                if not b1 and ret[1] == 'v':
+                    ret = ret[0] + 'u' + ret[2:]
             else:
                 ret = pinyin_SHENG[prev_char] + pinyin_YUN[cur_char]
             return ret + suf
@@ -209,7 +209,7 @@ def parse_results_dict(result_dict, filename):
     with open(fn, 'r') as f:
         for line in f.readlines():
             line = parse_pinyin(line)
-            print(line)
+            print(line.strip())
 
 
 braille_to_int123_map = {
